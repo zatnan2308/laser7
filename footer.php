@@ -79,6 +79,21 @@ foreach ( $channels as $c ) { $ch_by_id[ $c['id'] ] = $c; }
 			<span><?php l7_bi( 'footer_copyright', $D['footer']['copyright_ua'], $D['footer']['copyright_en'], 'option' ); ?></span>
 			<span><?php l7_bi( 'footer_note', $D['footer']['note_ua'], $D['footer']['note_en'], 'option' ); ?></span>
 		</div>
+
+		<?php
+		$credit_name = l7_opt( 'footer_credit_name', $D['footer']['credit_name'] );
+		$credit_url  = l7_opt( 'footer_credit_url', $D['footer']['credit_url'] );
+		if ( $credit_name ) :
+			?>
+			<div class="footer-credit">
+				<?php echo l7_bi_vals( 'Сайт від', 'Website by' ); ?>
+				<?php if ( $credit_url ) : ?>
+					<a href="<?php echo esc_url( $credit_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $credit_name ); ?></a>
+				<?php else : ?>
+					<?php echo esc_html( $credit_name ); ?>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
 	</div>
 </footer>
 

@@ -113,6 +113,8 @@ function l7_seed_content( $page_id ) {
 	update_field( 'footer_col_c_ua', $D['footer']['col_c_ua'], 'option' );
 	update_field( 'footer_col_c_en', $D['footer']['col_c_en'], 'option' );
 	update_field( 'footer_links', $D['footer']['links'], 'option' );
+	update_field( 'footer_credit_name', $D['footer']['credit_name'], 'option' );
+	update_field( 'footer_credit_url', $D['footer']['credit_url'], 'option' );
 
 	// SEO (brand_logo left empty on purpose → text wordmark until user uploads one).
 	update_field( 'seo_title_ua', $D['seo']['title_ua'], 'option' );

@@ -33,6 +33,18 @@ html:not([data-lang]) .lng-en { display: none !important; }
 html[data-lang="en"] .hero-h1 .lng-ua,
 html[data-lang="ua"] .hero-h1 .lng-en { display: none !important; }
 
+/* ---------- footer developer credit ---------------------------- */
+.footer-credit {
+  text-align: center;
+  padding-top: 1rem;
+  margin-top: 0.4rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.74rem;
+  color: var(--ink-muted);
+}
+.footer-credit a { color: var(--ink-soft); text-decoration: none; font-weight: 600; }
+.footer-credit a:hover { color: var(--red); text-decoration: underline; }
+
 /* ---------- WP admin bar: keep sticky nav below it -------------- */
 .admin-bar .nav { top: 32px; }
 @media screen and (max-width: 782px) {

@@ -125,6 +125,8 @@ function laser7_register_fields() {
 			l7f( 'text', 'url', 'URL', '#contact', array(), 'fl_' ),
 		) ),
 	) );
+	$opt[] = l7f( 'text', 'footer_credit_name', 'Кредит розробника — назва', $D['footer']['credit_name'] );
+	$opt[] = l7f( 'url', 'footer_credit_url', 'Кредит розробника — посилання', $D['footer']['credit_url'] );
 
 	// -- Tab: SEO ----------------------------------------------------------
 	$seo = $D['seo'];

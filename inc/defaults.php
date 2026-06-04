@@ -306,6 +306,8 @@ function l7_defaults() {
 			'col_a_ua' => 'Розділи', 'col_a_en' => 'Sections',
 			'col_b_ua' => 'Інформація', 'col_b_en' => 'Information',
 			'col_c_ua' => 'Контакти', 'col_c_en' => 'Contact',
+			'credit_name' => 'Alexey Kachan Agency',
+			'credit_url'  => 'https://alexeykachan.com/',
 			'links' => array(
 				array( 'ua' => 'Публічна оферта', 'en' => 'Public offer', 'url' => '#contact' ),
 				array( 'ua' => 'Політика повернень', 'en' => 'Returns', 'url' => '#contact' ),
