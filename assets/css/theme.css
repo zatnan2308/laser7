@@ -3,6 +3,20 @@
    (bilingual toggle + admin-bar offset; design CSS stays 1:1)
    ============================================================ */
 
+/* ---------- no horizontal page scroll (sticky-safe) ------------- */
+/* `clip` clips overflow WITHOUT creating a scroll container, so the
+   sticky header keeps working. Stops the mobile category strip (and any
+   off-screen element) from pushing the page wider than the screen. */
+html { overflow-x: clip; }
+
+/* ---------- mobile: contain the portfolio category tabs --------- */
+@media (max-width: 760px) {
+  /* one child only → block layout removes flexbox min-size quirks that
+     let the tab row expand the page; the row stays a swipeable strip */
+  .portfolio-controls { display: block; }
+  .cat-pills { width: 100%; max-width: 100%; min-width: 0; }
+}
+
 /* ---------- bilingual UA / EN switch ---------------------------- */
 /* Both languages are printed into the DOM; JS sets data-lang on <html>.
    Default (before JS) shows Ukrainian only. */
