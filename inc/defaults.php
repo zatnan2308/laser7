@@ -309,9 +309,9 @@ function l7_defaults() {
 			'credit_name' => 'Alexey Kachan Agency',
 			'credit_url'  => 'https://alexeykachan.com/',
 			'links' => array(
-				array( 'ua' => 'Публічна оферта', 'en' => 'Public offer', 'url' => '#contact' ),
-				array( 'ua' => 'Політика повернень', 'en' => 'Returns', 'url' => '#contact' ),
-				array( 'ua' => 'Конфіденційність', 'en' => 'Privacy', 'url' => '#contact' ),
+				array( 'ua' => 'Конфіденційність', 'en' => 'Privacy Policy', 'url' => '/konfidentsiynist/' ),
+				array( 'ua' => 'Файли cookie', 'en' => 'Cookie Policy', 'url' => '/cookies/' ),
+				array( 'ua' => 'Умови використання', 'en' => 'Terms of Use', 'url' => '/umovy/' ),
 			),
 		),
 
@@ -324,6 +324,37 @@ function l7_defaults() {
 			'og_image' => 'board-odesa.webp',
 			'geo_lat'  => '46.4017',
 			'geo_lng'  => '30.6500',
+		),
+
+		/* ---- cookie consent banner -------------------------------------- */
+		'cookie' => array(
+			'text_ua'    => 'Ми використовуємо файли cookie, щоб сайт працював зручно та запамʼятовував вибір мови. Продовжуючи, ви погоджуєтеся з нашою політикою.',
+			'text_en'    => 'We use cookies to make the site work well and remember your language. By continuing, you agree to our policy.',
+			'accept_ua'  => 'Прийняти', 'accept_en' => 'Accept',
+			'decline_ua' => 'Відхилити', 'decline_en' => 'Decline',
+			'more_ua'    => 'Детальніше', 'more_en' => 'Learn more',
+		),
+
+		/* ---- legal pages (privacy / cookies / terms) -------------------- */
+		'legal' => array(
+			'privacy' => array(
+				'slug' => 'konfidentsiynist', 'title_ua' => 'Конфіденційність', 'title_en' => 'Privacy Policy',
+				'heading_ua' => 'Політика конфіденційності', 'heading_en' => 'Privacy Policy',
+				'content_ua' => '<h2>Загальні положення</h2><p>Ця Політика конфіденційності пояснює, як майстерня «ЛАЗЕР · 7» (далі — «ми») збирає, використовує та захищає інформацію, яку ви надаєте під час користування сайтом suvenirodesa.net.</p><h2>Які дані ми збираємо</h2><ul><li>Імʼя та контакт (телефон, нік у месенджері), які ви залишаєте у формі заявки;</li><li>Зміст звернення — опис замовлення, ескізи, файли;</li><li>Технічні дані: файли cookie та вибір мови інтерфейсу, що зберігаються у вашому браузері.</li></ul><h2>Як ми використовуємо дані</h2><p>Виключно для звʼязку з вами, прорахунку та виконання замовлення. Ми не продаємо й не передаємо ваші дані третім особам, окрім служб доставки — для відправлення готового замовлення.</p><h2>Передача через месенджери</h2><p>Форма заявки відкриває Telegram із заповненим текстом. Надсилаючи повідомлення, ви передаєте дані через сервіс Telegram відповідно до його власної політики конфіденційності.</p><h2>Зберігання та ваші права</h2><p>Ми зберігаємо дані стільки, скільки потрібно для виконання замовлення та дотримання вимог законодавства України. Ви можете попросити оновити або видалити ваші дані, написавши нам.</p><h2>Контакти</h2><p>З питань конфіденційності: hello@laser7.ua, +380 67 484 71 42.</p>',
+				'content_en' => '<h2>General</h2><p>This Privacy Policy explains how the «LASER · 7» workshop (“we”) collects, uses and protects the information you provide while using the suvenirodesa.net website.</p><h2>Data we collect</h2><ul><li>Your name and contact (phone, messenger handle) left in the request form;</li><li>The content of your request — order description, sketches, files;</li><li>Technical data: cookies and the interface language preference stored in your browser.</li></ul><h2>How we use the data</h2><p>Solely to contact you, prepare a quote and fulfil your order. We do not sell or share your data with third parties, except delivery services to ship a completed order.</p><h2>Messenger transfer</h2><p>The request form opens Telegram with a pre-filled message. By sending it, you transfer data through the Telegram service in line with its own privacy policy.</p><h2>Storage &amp; your rights</h2><p>We keep data only as long as needed to fulfil the order and comply with the laws of Ukraine. You may ask us to update or delete your data by contacting us.</p><h2>Contact</h2><p>Privacy enquiries: hello@laser7.ua, +380 67 484 71 42.</p>',
+			),
+			'cookies' => array(
+				'slug' => 'cookies', 'title_ua' => 'Файли cookie', 'title_en' => 'Cookie Policy',
+				'heading_ua' => 'Політика щодо файлів cookie', 'heading_en' => 'Cookie Policy',
+				'content_ua' => '<h2>Що таке файли cookie</h2><p>Cookie — це невеликі текстові файли, які зберігаються у вашому браузері, щоб сайт працював коректно та запамʼятовував ваші налаштування.</p><h2>Які cookie ми використовуємо</h2><ul><li><strong>Необхідні</strong> — запамʼятовують вибір мови (UA / EN) та вашу згоду на використання cookie. Без них сайт не працюватиме належним чином.</li><li><strong>Аналітичні</strong> (за наявності) — допомагають анонімно зрозуміти, як відвідувачі користуються сайтом, щоб ми могли його покращувати.</li></ul><h2>Керування файлами cookie</h2><p>Ви можете будь-коли видалити або заблокувати cookie в налаштуваннях свого браузера. Зверніть увагу: вимкнення необхідних cookie може вплинути на роботу сайту.</p><h2>Згода</h2><p>Натискаючи «Прийняти» у банері cookie або продовжуючи користуватися сайтом, ви погоджуєтеся з використанням файлів cookie згідно з цією Політикою.</p>',
+				'content_en' => '<h2>What cookies are</h2><p>Cookies are small text files stored in your browser so the site works correctly and remembers your preferences.</p><h2>Cookies we use</h2><ul><li><strong>Necessary</strong> — remember your language choice (UA / EN) and your cookie consent. The site will not work properly without them.</li><li><strong>Analytics</strong> (if present) — help us understand anonymously how visitors use the site so we can improve it.</li></ul><h2>Managing cookies</h2><p>You can delete or block cookies at any time in your browser settings. Note that disabling necessary cookies may affect how the site works.</p><h2>Consent</h2><p>By clicking “Accept” in the cookie banner or by continuing to use the site, you agree to the use of cookies under this Policy.</p>',
+			),
+			'terms' => array(
+				'slug' => 'umovy', 'title_ua' => 'Умови використання', 'title_en' => 'Terms of Use',
+				'heading_ua' => 'Умови використання', 'heading_en' => 'Terms of Use',
+				'content_ua' => '<h2>Загальні умови</h2><p>Користуючись сайтом suvenirodesa.net, ви погоджуєтеся з цими Умовами використання. Сайт належить майстерні лазерної різки та гравіювання «ЛАЗЕР · 7» (Одеса, 7 км).</p><h2>Послуги та замовлення</h2><p>Сайт має інформаційний характер. Замовлення оформлюються через месенджери (Telegram, Viber, WhatsApp) або за телефоном. Остаточну вартість ми підтверджуємо за вашим макетом перед початком роботи.</p><h2>Ціни</h2><p>Усі ціни на сайті є орієнтовними та не є публічною офертою. Точна вартість залежить від матеріалу, обсягу, складності та накладу.</p><h2>Інтелектуальна власність</h2><p>Усі матеріали сайту — тексти, фотографії робіт, дизайн — належать «ЛАЗЕР · 7». Копіювання та використання без письмового дозволу заборонені.</p><h2>Відповідальність</h2><p>Ми докладаємо зусиль, щоб інформація на сайті була точною та актуальною, проте не гарантуємо відсутність помилок і не несемо відповідальності за можливі збитки від використання сайту.</p><h2>Контакти</h2><p>hello@laser7.ua, +380 67 484 71 42.</p>',
+				'content_en' => '<h2>General terms</h2><p>By using the suvenirodesa.net website you agree to these Terms of Use. The site belongs to the «LASER · 7» laser cutting &amp; engraving workshop (Odesa, 7-km market).</p><h2>Services &amp; orders</h2><p>The site is informational. Orders are placed via messengers (Telegram, Viber, WhatsApp) or by phone. We confirm the final price from your artwork before starting work.</p><h2>Prices</h2><p>All prices on the site are indicative and do not constitute a public offer. The exact price depends on material, volume, complexity and batch size.</p><h2>Intellectual property</h2><p>All site materials — texts, work photos, design — belong to «LASER · 7». Copying or use without written permission is prohibited.</p><h2>Liability</h2><p>We make every effort to keep the information accurate and up to date, but we do not guarantee it is error-free and are not liable for any damages from using the site.</p><h2>Contact</h2><p>hello@laser7.ua, +380 67 484 71 42.</p>',
+			),
 		),
 	);
 

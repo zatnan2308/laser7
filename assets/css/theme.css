@@ -92,3 +92,56 @@ html[data-lang="ua"] .hero-h1 .lng-en { display: none !important; }
   background: rgba(255,255,255,0.1); border: 0; color: #fff; font-size: 1.6rem; cursor: pointer;
 }
 .l7-video-overlay .l7-vclose:hover { background: var(--red); }
+
+/* ---------- cookie consent banner (site styling) --------------- */
+.l7-cookie {
+  position: fixed;
+  left: 50%;
+  bottom: 1.2rem;
+  transform: translateX(-50%) translateY(160%);
+  z-index: 95;
+  width: min(680px, calc(100% - 2rem));
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.1, 1), opacity 0.45s;
+}
+.l7-cookie.is-shown { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+/* thin "laser glow" accent line on top */
+.l7-cookie::before {
+  content: ""; position: absolute; left: 1.3rem; right: 1.3rem; top: -1px; height: 3px;
+  background: linear-gradient(90deg, var(--red), #f6a94a);
+  border-radius: 3px;
+}
+.l7-cookie-inner { display: flex; align-items: center; gap: 1.2rem; padding: 1.1rem 1.35rem; flex-wrap: wrap; }
+.l7-cookie-text { flex: 1 1 280px; font-size: 0.88rem; color: var(--ink-soft); line-height: 1.55; }
+.l7-cookie-link { color: var(--red); font-weight: 700; text-decoration: none; white-space: nowrap; }
+.l7-cookie-link:hover { text-decoration: underline; }
+.l7-cookie-btns { display: flex; gap: 0.6rem; flex: 0 0 auto; }
+.l7-cookie-btns .btn { padding: 0.7rem 1.3rem; }
+@media (max-width: 600px) {
+  .l7-cookie { bottom: 0.7rem; width: calc(100% - 1.2rem); }
+  .l7-cookie-inner { padding: 1rem; gap: 0.85rem; }
+  .l7-cookie-btns { width: 100%; }
+  .l7-cookie-btns .btn { flex: 1; justify-content: center; }
+  /* keep the corner float buttons out of the way while the banner is up */
+  body.l7-cookie-on .qc,
+  body.l7-cookie-on .scroll-top { opacity: 0; pointer-events: none; }
+}
+
+/* ---------- legal pages (privacy / cookies / terms) ------------ */
+.legal .legal-wrap { max-width: 820px; }
+.legal-body { color: var(--ink-soft); font-size: 0.98rem; line-height: 1.75; }
+.legal-body h2 {
+  font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 1.15rem;
+  text-transform: uppercase; letter-spacing: 0.02em; color: var(--ink);
+  margin: 1.9rem 0 0.6rem;
+}
+.legal-body p { margin: 0 0 1rem; }
+.legal-body ul { margin: 0 0 1rem; padding-left: 1.2rem; }
+.legal-body li { margin-bottom: 0.4rem; }
+.legal-body a { color: var(--red); }
+.legal-body strong { color: var(--ink); }

@@ -243,5 +243,35 @@
         window.open('https://t.me/' + handle + '?text=' + msg, '_blank');
       });
     }
+
+    /* ---------------- cookie consent ----------------- */
+    var cookieBar = document.querySelector('[data-cookie]');
+    if (cookieBar) {
+      function hasConsent() {
+        try { if (localStorage.getItem('laser7_cookie')) return true; } catch (e) {}
+        return /(?:^|;\s*)laser7_cookie=/.test(document.cookie);
+      }
+      function setConsent(v) {
+        try { localStorage.setItem('laser7_cookie', v); } catch (e) {}
+        document.cookie = 'laser7_cookie=' + v + ';path=/;max-age=31536000;samesite=lax';
+      }
+      function dismiss(v) {
+        setConsent(v);
+        cookieBar.classList.remove('is-shown');
+        document.body.classList.remove('l7-cookie-on');
+        setTimeout(function () { cookieBar.hidden = true; }, 450);
+      }
+      if (!hasConsent()) {
+        cookieBar.hidden = false;
+        requestAnimationFrame(function () {
+          cookieBar.classList.add('is-shown');
+          document.body.classList.add('l7-cookie-on');
+        });
+      }
+      var acc = cookieBar.querySelector('[data-cookie-accept]');
+      var dec = cookieBar.querySelector('[data-cookie-decline]');
+      if (acc) acc.addEventListener('click', function () { dismiss('accepted'); });
+      if (dec) dec.addEventListener('click', function () { dismiss('declined'); });
+    }
   });
 })();

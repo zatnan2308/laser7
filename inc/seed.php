@@ -80,6 +80,31 @@ function l7_seed_photo_rows( $rows, $key = 'photo' ) {
 	return $rows;
 }
 
+/** Create the legal pages (privacy / cookies / terms) if missing; returns key→ID. */
+function l7_ensure_legal_pages() {
+	$D   = l7_defaults();
+	$ids = array();
+	foreach ( $D['legal'] as $key => $L ) {
+		$existing = get_page_by_path( $L['slug'] );
+		if ( $existing ) {
+			$id = $existing->ID;
+		} else {
+			$id = wp_insert_post( array(
+				'post_title'   => $L['title_ua'],
+				'post_name'    => $L['slug'],
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+				'post_content' => '',
+			) );
+		}
+		if ( $id && ! is_wp_error( $id ) ) {
+			update_post_meta( $id, '_wp_page_template', 'page-legal.php' );
+			$ids[ $key ] = (int) $id;
+		}
+	}
+	return $ids;
+}
+
 function l7_seed_content( $page_id ) {
 	$D = l7_defaults();
 
@@ -124,6 +149,44 @@ function l7_seed_content( $page_id ) {
 	update_field( 'seo_og_image', l7_import_asset_image( $D['seo']['og_image'] ), 'option' );
 	update_field( 'seo_geo_lat', $D['seo']['geo_lat'], 'option' );
 	update_field( 'seo_geo_lng', $D['seo']['geo_lng'], 'option' );
+
+	// Cookie banner
+	$ck = $D['cookie'];
+	update_field( 'cookie_text_ua', $ck['text_ua'], 'option' );
+	update_field( 'cookie_text_en', $ck['text_en'], 'option' );
+	update_field( 'cookie_accept_ua', $ck['accept_ua'], 'option' );
+	update_field( 'cookie_accept_en', $ck['accept_en'], 'option' );
+	update_field( 'cookie_decline_ua', $ck['decline_ua'], 'option' );
+	update_field( 'cookie_decline_en', $ck['decline_en'], 'option' );
+	update_field( 'cookie_more_ua', $ck['more_ua'], 'option' );
+	update_field( 'cookie_more_en', $ck['more_en'], 'option' );
+
+	// Legal pages: create + fill content, then point footer links at real permalinks.
+	$legal = l7_ensure_legal_pages();
+	foreach ( $D['legal'] as $key => $L ) {
+		$pid = isset( $legal[ $key ] ) ? $legal[ $key ] : 0;
+		if ( ! $pid ) {
+			continue;
+		}
+		update_field( 'legal_heading_ua', $L['heading_ua'], $pid );
+		update_field( 'legal_heading_en', $L['heading_en'], $pid );
+		update_field( 'legal_content_ua', $L['content_ua'], $pid );
+		update_field( 'legal_content_en', $L['content_en'], $pid );
+	}
+	$order = array(
+		'privacy' => array( 'Конфіденційність', 'Privacy Policy' ),
+		'cookies' => array( 'Файли cookie', 'Cookie Policy' ),
+		'terms'   => array( 'Умови використання', 'Terms of Use' ),
+	);
+	$links = array();
+	foreach ( $order as $key => $lab ) {
+		if ( ! empty( $legal[ $key ] ) ) {
+			$links[] = array( 'ua' => $lab[0], 'en' => $lab[1], 'url' => get_permalink( $legal[ $key ] ) );
+		}
+	}
+	if ( $links ) {
+		update_field( 'footer_links', $links, 'option' );
+	}
 
 	/* ---------------- FRONT PAGE ----------------------------------- */
 	$p = $page_id;

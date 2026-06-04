@@ -114,6 +114,24 @@ foreach ( $channels as $c ) { $ch_by_id[ $c['id'] ] = $c; }
 <!-- scroll to top -->
 <button class="scroll-top" data-scrolltop aria-label="Back to top" title="Back to top"><?php echo l7_icon( 'top' ); ?></button>
 
+<!-- cookie consent banner -->
+<?php
+$cookies_page = get_page_by_path( 'cookies' );
+$cookies_url  = $cookies_page ? get_permalink( $cookies_page ) : home_url( '/cookies/' );
+?>
+<div class="l7-cookie" data-cookie hidden>
+	<div class="l7-cookie-inner">
+		<div class="l7-cookie-text">
+			<?php l7_bi( 'cookie_text', $D['cookie']['text_ua'], $D['cookie']['text_en'], 'option' ); ?>
+			<a class="l7-cookie-link" href="<?php echo esc_url( $cookies_url ); ?>"><?php l7_bi( 'cookie_more', $D['cookie']['more_ua'], $D['cookie']['more_en'], 'option' ); ?></a>
+		</div>
+		<div class="l7-cookie-btns">
+			<button type="button" class="btn btn-ghost" data-cookie-decline><?php l7_bi( 'cookie_decline', $D['cookie']['decline_ua'], $D['cookie']['decline_en'], 'option' ); ?></button>
+			<button type="button" class="btn btn-primary" data-cookie-accept><?php l7_bi( 'cookie_accept', $D['cookie']['accept_ua'], $D['cookie']['accept_en'], 'option' ); ?></button>
+		</div>
+	</div>
+</div>
+
 <?php wp_footer(); ?>
 </body>
 </html>

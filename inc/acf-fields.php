@@ -137,6 +137,14 @@ function laser7_register_fields() {
 	$opt[] = l7f( 'text', 'seo_geo_lat', 'Гео-широта (для schema.org)', $seo['geo_lat'] );
 	$opt[] = l7f( 'text', 'seo_geo_lng', 'Гео-довгота (для schema.org)', $seo['geo_lng'] );
 
+	// -- Tab: Cookie-банер -------------------------------------------------
+	$ck = $D['cookie'];
+	$opt[] = l7f_tab( 'Cookie-банер', 'cookie' );
+	$opt = array_merge( $opt, l7f_bi( 'cookie_text', 'Текст банера', $ck['text_ua'], $ck['text_en'], 'textarea' ) );
+	$opt = array_merge( $opt, l7f_bi( 'cookie_accept', 'Кнопка «Прийняти»', $ck['accept_ua'], $ck['accept_en'] ) );
+	$opt = array_merge( $opt, l7f_bi( 'cookie_decline', 'Кнопка «Відхилити»', $ck['decline_ua'], $ck['decline_en'] ) );
+	$opt = array_merge( $opt, l7f_bi( 'cookie_more', 'Посилання «Детальніше»', $ck['more_ua'], $ck['more_en'] ) );
+
 	acf_add_local_field_group( array(
 		'key'      => 'group_l7_options',
 		'title'    => 'ЛАЗЕР · 7 — глобальні налаштування',
@@ -363,5 +371,18 @@ function laser7_register_fields() {
 		'menu_order' => 0,
 		'position'   => 'normal',
 		'style'      => 'default',
+	) );
+
+	/* =================================================================
+	 * GROUP 3 — LEGAL PAGES (privacy / cookies / terms)
+	 * ================================================================= */
+	acf_add_local_field_group( array(
+		'key'      => 'group_l7_legal',
+		'title'    => 'ЛАЗЕР · 7 — юридична сторінка',
+		'fields'   => l7_collect( array(
+			l7f_bi( 'legal_heading', 'Заголовок', '', '' ),
+			l7f_bi( 'legal_content', 'Текст сторінки', '', '', 'wysiwyg' ),
+		) ),
+		'location' => array( array( array( 'param' => 'page_template', 'operator' => '==', 'value' => 'page-legal.php' ) ) ),
 	) );
 }
