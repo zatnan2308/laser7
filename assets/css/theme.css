@@ -1,0 +1,47 @@
+/* ============================================================
+   ЛАЗЕР · 7 — WordPress theme additions
+   (bilingual toggle + admin-bar offset; design CSS stays 1:1)
+   ============================================================ */
+
+/* ---------- bilingual UA / EN switch ---------------------------- */
+/* Both languages are printed into the DOM; JS sets data-lang on <html>.
+   Default (before JS) shows Ukrainian only. */
+html[data-lang="en"] .lng-ua { display: none !important; }
+html[data-lang="ua"] .lng-en { display: none !important; }
+html:not([data-lang]) .lng-en { display: none !important; }
+
+/* inline languages inside headings / buttons keep flowing inline */
+.hero-h1 .lng-ua, .hero-h1 .lng-en,
+.btn .lng-ua, .btn .lng-en,
+.section-head .lng-ua, .section-head .lng-en,
+.cta-banner h2 .lng-ua, .cta-banner h2 .lng-en,
+.contact h2 .lng-ua, .contact h2 .lng-en { display: inline; }
+html[data-lang="en"] .hero-h1 .lng-ua,
+html[data-lang="ua"] .hero-h1 .lng-en { display: none !important; }
+
+/* ---------- WP admin bar: keep sticky nav below it -------------- */
+.admin-bar .nav { top: 32px; }
+@media screen and (max-width: 782px) {
+  .admin-bar .nav { top: 46px; }
+}
+
+/* ---------- portfolio filtering (vanilla JS replaces React) ----- */
+.work[hidden] { display: none !important; }
+
+/* swatch / hero-figure / testimonial with a real photo: cover the container */
+.mat-swatch.has-photo { background-size: cover; background-position: center; }
+.testi-media.has-photo { background-size: cover; background-position: center; }
+.testi-media.has-photo .testi-play { position: absolute; }
+
+/* fullscreen video overlay (testimonial play button) */
+.l7-video-overlay {
+  position: fixed; inset: 0; z-index: 320;
+  background: rgba(10,10,14,0.92); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+}
+.l7-video-overlay video { max-width: min(1100px, 92vw); max-height: 82vh; border-radius: var(--radius-sm); background: #000; }
+.l7-video-overlay .l7-vclose {
+  position: absolute; top: 1rem; right: 1rem; width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.1); border: 0; color: #fff; font-size: 1.6rem; cursor: pointer;
+}
+.l7-video-overlay .l7-vclose:hover { background: var(--red); }

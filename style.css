@@ -1,0 +1,18 @@
+/*
+Theme Name: ЛАЗЕР · 7
+Theme URI: https://github.com/zatnan2308/laser7
+Author: Laser7
+Description: Лендинг майстерні лазерної різки та гравіювання «ЛАЗЕР · 7» (Одеса, 7 км). Двомовний (UA/EN). Усі тексти, фото, відео, контакти, шапка та підвал редагуються через ACF Pro — у налаштуваннях сторінки та налаштуваннях теми. Bilingual landing for a laser cutting & engraving workshop.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.7
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: laser7
+Tags: landing, business, one-page, acf, bilingual
+*/
+
+/* All visual styles live in assets/css/styles.css (design 1:1) and
+   assets/css/theme.css (bilingual + WP tweaks). This file only carries
+   the WordPress theme header. */
