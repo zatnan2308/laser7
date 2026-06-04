@@ -35,7 +35,7 @@ $cards = l7_rows( 'hero_cards', array( 'title_ua', 'title_en', 'sub_ua', 'sub_en
 				</div>
 			</div>
 			<div class="hero-figure">
-				<div class="hero-figure-img"<?php echo l7_bg_style( 'hero_figure', $h['figure'] ); ?>></div>
+				<div class="hero-figure-img"><?php echo l7_render_img( l7_get_raw( 'hero_figure' ), $h['figure'], 'Лазерна різка та гравіювання — ЛАЗЕР·7, Одеса', array( 'loading' => 'eager', 'size' => 'large' ) ); ?></div>
 				<div class="hero-figure-tag">
 					<span class="dot"></span><?php l7_bi( 'hero_figure_tag', $h['figure_tag_ua'], $h['figure_tag_en'] ); ?>
 				</div>
@@ -52,7 +52,7 @@ $cards = l7_rows( 'hero_cards', array( 'title_ua', 'title_en', 'sub_ua', 'sub_en
 				?>
 				<a class="hero-card tone-<?php echo (int) $i; ?>" href="#portfolio">
 					<?php if ( $photo ) : ?>
-						<div class="bg" style="background-image:url(<?php echo esc_url( $photo ); ?>)"></div>
+						<div class="bg"><?php echo l7_render_img( $c['photo'], '', $c['title_ua'], array( 'size' => 'laser7-card' ) ); ?></div>
 					<?php else : ?>
 						<div class="bg-fallback"><?php echo l7_motif( $motif ); ?></div>
 					<?php endif; ?>

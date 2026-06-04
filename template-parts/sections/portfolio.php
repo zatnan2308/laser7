@@ -79,7 +79,7 @@ if ( $page_size < 1 ) { $page_size = 9; }
 					data-cat-en="<?php echo esc_attr( $cle ); ?>">
 					<div class="work-img<?php echo $photo ? '' : ' is-ph'; ?>">
 						<?php if ( $photo ) : ?>
-							<img src="<?php echo esc_url( $photo ); ?>" alt="<?php echo esc_attr( $alt ); ?>" loading="lazy" decoding="async" />
+							<?php echo l7_render_img( $w['photo'], '', $alt, array( 'size' => 'laser7-portfolio' ) ); ?>
 						<?php else : ?>
 							<div class="work-placeholder"><?php echo l7_motif( 'logo' ); ?></div>
 						<?php endif; ?>

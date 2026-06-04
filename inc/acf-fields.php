@@ -80,6 +80,8 @@ function laser7_register_fields() {
 	$opt[] = l7f( 'true_false', 'show_topbar', 'Показувати верхню панель (адреса/графік/телефон)', 1, array( 'ui' => 1 ) );
 	$opt = array_merge( $opt, l7f_bi( 'brand_name', 'Назва бренду', $D['brand']['name_ua'], $D['brand']['name_en'] ) );
 	$opt[] = l7f( 'text', 'brand_mark', 'Цифра логотипу', $D['brand']['mark'] );
+	$opt[] = l7f_img( 'brand_logo', 'Логотип (зображення)' );
+	$opt[ count( $opt ) - 1 ]['instructions'] = 'Якщо завантажити — замінює текстовий логотип «ЛАЗЕР · 7» у шапці та підвалі. Рекомендовано PNG/SVG/WebP з прозорим фоном, висота ~80px.';
 	$opt = array_merge( $opt, l7f_bi( 'topbar_address', 'Адреса (топбар)', $D['topbar']['address_ua'], $D['topbar']['address_en'] ) );
 	$opt = array_merge( $opt, l7f_bi( 'topbar_hours', 'Графік (топбар)', $D['topbar']['hours_ua'], $D['topbar']['hours_en'] ) );
 	$opt[] = l7f( 'text', 'topbar_phone', 'Телефон (топбар)', $D['topbar']['phone'] );
@@ -123,6 +125,15 @@ function laser7_register_fields() {
 			l7f( 'text', 'url', 'URL', '#contact', array(), 'fl_' ),
 		) ),
 	) );
+
+	// -- Tab: SEO ----------------------------------------------------------
+	$seo = $D['seo'];
+	$opt[] = l7f_tab( 'SEO', 'seo' );
+	$opt = array_merge( $opt, l7f_bi( 'seo_title', 'Title сторінки (вкладка браузера / Google)', $seo['title_ua'], $seo['title_en'] ) );
+	$opt = array_merge( $opt, l7f_bi( 'seo_description', 'Meta description (опис у пошуку)', $seo['desc_ua'], $seo['desc_en'], 'textarea' ) );
+	$opt[] = l7f_img( 'seo_og_image', 'Зображення для соцмереж (OG / Twitter, бажано 1200×630)' );
+	$opt[] = l7f( 'text', 'seo_geo_lat', 'Гео-широта (для schema.org)', $seo['geo_lat'] );
+	$opt[] = l7f( 'text', 'seo_geo_lng', 'Гео-довгота (для schema.org)', $seo['geo_lng'] );
 
 	acf_add_local_field_group( array(
 		'key'      => 'group_l7_options',

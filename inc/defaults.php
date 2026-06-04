@@ -312,6 +312,17 @@ function l7_defaults() {
 				array( 'ua' => 'Конфіденційність', 'en' => 'Privacy', 'url' => '#contact' ),
 			),
 		),
+
+		/* ---- SEO --------------------------------------------------------- */
+		'seo' => array(
+			'title_ua' => 'ЛАЗЕР · 7 — лазерна різка та гравіювання · Одеса',
+			'title_en' => 'LASER · 7 — laser cutting & engraving · Odesa',
+			'desc_ua'  => 'Майстерня лазерної різки та гравіювання на 7 км у Одесі. Магніти, бокали, брелоки, корпоративний мерч, опт. UA / EN.',
+			'desc_en'  => 'Laser cutting & engraving workshop at the 7-km market in Odesa. Magnets, glassware, keychains, corporate merch, wholesale. UA / EN.',
+			'og_image' => 'board-odesa.webp',
+			'geo_lat'  => '46.4017',
+			'geo_lng'  => '30.6500',
+		),
 	);
 
 	return $d;

@@ -35,9 +35,7 @@ foreach ( $channels as $c ) { $ch_by_id[ $c['id'] ] = $c; }
 	<div class="container-wide">
 		<div class="footer-top">
 			<div class="footer-brand">
-				<span class="nav-logo">
-					<span class="lng lng-ua"><?php echo esc_html( $brand_ua ); ?></span><span class="lng lng-en"><?php echo esc_html( $brand_en ); ?></span><span class="bar"></span><span class="accent"><?php echo esc_html( $brand_mark ); ?></span>
-				</span>
+				<?php echo l7_logo(); ?>
 				<p class="tagline"><?php l7_bi( 'footer_tagline', $D['footer']['tagline_ua'], $D['footer']['tagline_en'], 'option' ); ?></p>
 				<div class="footer-social">
 					<?php foreach ( $channels as $c ) :

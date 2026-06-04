@@ -32,6 +32,11 @@ function l7_opt( $name, $default = '' ) {
 	return l7_field( $name, $default, 'option' );
 }
 
+/** Raw ACF field value (image array / id / etc.), or '' when ACF is inactive. */
+function l7_get_raw( $name, $post_id = false ) {
+	return function_exists( 'get_field' ) ? get_field( $name, $post_id ) : '';
+}
+
 function l7_sub( $name, $default = '' ) {
 	if ( function_exists( 'get_sub_field' ) ) {
 		$v = get_sub_field( $name );
@@ -195,6 +200,113 @@ function l7_bg_style( $field_name, $default_filename, $size = 'large', $post_id 
 /** Telephone href (strip spaces). */
 function l7_tel( $phone ) {
 	return 'tel:' . preg_replace( '/\s+/', '', $phone );
+}
+
+/* -----------------------------------------------------------------------
+ * SEO-friendly image rendering: real <img> with alt + width/height, and
+ * responsive srcset for Media-Library images.
+ * -------------------------------------------------------------------- */
+
+/** Pixel dimensions of a bundled asset (cached). Returns [w,h] or null. */
+function l7_asset_dims( $filename ) {
+	static $cache = array();
+	if ( ! $filename ) {
+		return null;
+	}
+	if ( isset( $cache[ $filename ] ) ) {
+		return $cache[ $filename ];
+	}
+	$path = LASER7_DIR . '/assets/images/' . ltrim( $filename, '/' );
+	$dims = null;
+	if ( is_file( $path ) ) {
+		$info = @getimagesize( $path );
+		if ( $info ) {
+			$dims = array( (int) $info[0], (int) $info[1] );
+		}
+	}
+	$cache[ $filename ] = $dims;
+	return $dims;
+}
+
+/**
+ * Render an <img> for a content photo.
+ * - ACF image (id/array)  → wp_get_attachment_image() (srcset + sizes + w/h + alt)
+ * - bundled default / url → plain <img> with width/height from the asset file
+ *
+ * @param mixed  $value            ACF image value OR bundled filename.
+ * @param string $default_filename fallback asset filename.
+ * @param string $alt              alt text (used for defaults; ACF media keeps its own alt unless given).
+ * @param array  $opts             class, size, loading, sizes_attr.
+ */
+function l7_render_img( $value, $default_filename = '', $alt = '', $opts = array() ) {
+	$class   = isset( $opts['class'] ) ? $opts['class'] : '';
+	$size    = isset( $opts['size'] ) ? $opts['size'] : 'large';
+	$loading = isset( $opts['loading'] ) ? $opts['loading'] : 'lazy';
+
+	$id = 0;
+	if ( is_array( $value ) ) {
+		$id = ! empty( $value['ID'] ) ? (int) $value['ID'] : ( ! empty( $value['id'] ) ? (int) $value['id'] : 0 );
+	} elseif ( is_numeric( $value ) ) {
+		$id = (int) $value;
+	}
+
+	if ( $id && function_exists( 'wp_get_attachment_image' ) && wp_get_attachment_image_src( $id, $size ) ) {
+		$attr = array(
+			'class'    => $class,
+			'loading'  => $loading,
+			'decoding' => 'async',
+		);
+		if ( '' !== $alt ) {
+			$attr['alt'] = $alt;
+		}
+		if ( ! empty( $opts['sizes_attr'] ) ) {
+			$attr['sizes'] = $opts['sizes_attr'];
+		}
+		return wp_get_attachment_image( $id, $size, false, $attr );
+	}
+
+	// Bundled default / URL.
+	$url = l7_photo( $value, $default_filename );
+	if ( ! $url ) {
+		return '';
+	}
+	$fn = '';
+	if ( is_string( $value ) && '' !== $value && ! preg_match( '#^https?://#', $value ) ) {
+		$fn = $value;
+	} elseif ( $default_filename ) {
+		$fn = $default_filename;
+	}
+	$dims_attr = '';
+	if ( $fn ) {
+		$d = l7_asset_dims( $fn );
+		if ( $d ) {
+			$dims_attr = ' width="' . $d[0] . '" height="' . $d[1] . '"';
+		}
+	}
+	$cls = $class ? ' class="' . esc_attr( $class ) . '"' : '';
+	return '<img src="' . esc_url( $url ) . '"' . $cls . ' alt="' . esc_attr( $alt ) . '"' . $dims_attr . ' loading="' . esc_attr( $loading ) . '" decoding="async" />';
+}
+
+/**
+ * Brand logo: an uploaded image (theme option `brand_logo`) when set,
+ * otherwise the bilingual text wordmark. Used in nav + footer.
+ */
+function l7_logo() {
+	$D        = l7_defaults();
+	$brand_ua = l7_opt( 'brand_name_ua', $D['brand']['name_ua'] );
+	$brand_en = l7_opt( 'brand_name_en', $D['brand']['name_en'] );
+	$mark     = l7_opt( 'brand_mark', $D['brand']['mark'] );
+
+	$logo = function_exists( 'get_field' ) ? get_field( 'brand_logo', 'option' ) : '';
+	if ( $logo ) {
+		$alt = trim( $brand_ua . ' · ' . $mark );
+		return '<span class="nav-logo nav-logo--img">' . l7_render_img( $logo, '', $alt, array( 'class' => 'brand-logo', 'loading' => 'eager', 'size' => 'medium' ) ) . '</span>';
+	}
+	return '<span class="nav-logo">'
+		. '<span class="lng lng-ua">' . esc_html( $brand_ua ) . '</span>'
+		. '<span class="lng lng-en">' . esc_html( $brand_en ) . '</span>'
+		. '<span class="bar"></span><span class="accent">' . esc_html( $mark ) . '</span>'
+		. '</span>';
 }
 
 /** Active accent class chosen in theme options (default red). */

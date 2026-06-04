@@ -61,9 +61,7 @@ $ch_class  = array( 'telegram' => 'tg', 'viber' => 'vb', 'whatsapp' => 'wa' );
 <header class="nav">
 	<div class="nav-inner">
 		<a href="<?php echo esc_url( home_url( '/#top' ) ); ?>" class="nav-mark">
-			<span class="nav-logo">
-				<span class="lng lng-ua"><?php echo esc_html( $brand_ua ); ?></span><span class="lng lng-en"><?php echo esc_html( $brand_en ); ?></span><span class="bar"></span><span class="accent"><?php echo esc_html( $brand_mark ); ?></span>
-			</span>
+			<?php echo l7_logo(); ?>
 		</a>
 		<ul class="nav-links">
 			<?php foreach ( $nav_items as $l ) : ?>
@@ -90,9 +88,7 @@ $ch_class  = array( 'telegram' => 'tg', 'viber' => 'vb', 'whatsapp' => 'wa' );
 	<div class="mm-backdrop" data-menu-close></div>
 	<nav class="mm-panel" aria-label="mobile">
 		<div class="mm-head">
-			<span class="nav-logo">
-				<span class="lng lng-ua"><?php echo esc_html( $brand_ua ); ?></span><span class="lng lng-en"><?php echo esc_html( $brand_en ); ?></span><span class="bar"></span><span class="accent"><?php echo esc_html( $brand_mark ); ?></span>
-			</span>
+			<?php echo l7_logo(); ?>
 			<button class="mm-close" aria-label="Close" data-menu-close>×</button>
 		</div>
 		<ul class="mm-links">

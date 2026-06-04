@@ -18,9 +18,9 @@ $services = l7_rows( 'about_services', array( 'ua', 'en' ), $D['about_services']
 		<div class="about">
 			<div class="about-visual">
 				<div class="about-photos">
-					<div class="about-photo big"<?php echo l7_bg_style( 'about_photo_big', $a['photo_big'] ); ?>></div>
-					<div class="about-photo"<?php echo l7_bg_style( 'about_photo_two', $a['photo_two'] ); ?>></div>
-					<div class="about-photo"<?php echo l7_bg_style( 'about_photo_three', $a['photo_three'] ); ?>></div>
+					<div class="about-photo big"><?php echo l7_render_img( l7_get_raw( 'about_photo_big' ), $a['photo_big'], 'Вироби майстерні ЛАЗЕР·7 — мапи України', array( 'size' => 'large' ) ); ?></div>
+					<div class="about-photo"><?php echo l7_render_img( l7_get_raw( 'about_photo_two' ), $a['photo_two'], 'Вироби майстерні ЛАЗЕР·7 — іменні скриньки', array( 'size' => 'laser7-card' ) ); ?></div>
+					<div class="about-photo"><?php echo l7_render_img( l7_get_raw( 'about_photo_three' ), $a['photo_three'], 'Вироби майстерні ЛАЗЕР·7 — іменні лінійки', array( 'size' => 'laser7-card' ) ); ?></div>
 				</div>
 				<div class="exp-badge">
 					<div class="y"><?php echo esc_html( l7_field( 'about_years', $a['years'] ) ); ?><sup>+</sup></div>

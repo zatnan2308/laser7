@@ -28,10 +28,31 @@ html[data-lang="ua"] .hero-h1 .lng-en { display: none !important; }
 /* ---------- portfolio filtering (vanilla JS replaces React) ----- */
 .work[hidden] { display: none !important; }
 
-/* swatch / hero-figure / testimonial with a real photo: cover the container */
+/* swatch with a real photo: cover the container */
 .mat-swatch.has-photo { background-size: cover; background-position: center; }
-.testi-media.has-photo { background-size: cover; background-position: center; }
 .testi-media.has-photo .testi-play { position: absolute; }
+
+/* ---------- uploaded logo (theme option) ----------------------- */
+.nav-logo--img { line-height: 0; display: inline-flex; align-items: center; }
+.brand-logo { display: block; height: 38px; width: auto; max-width: 220px; }
+.footer-brand .brand-logo { height: 44px; }
+@media (max-width: 760px) { .brand-logo { height: 34px; } }
+
+/* ---------- content photos as real <img> (alt + SEO) ----------- */
+/* keep the exact "background cover" look the prototype had */
+.hero-figure-img > img,
+.hero-card .bg > img,
+.about-photo > img,
+.testi-media > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.testi-media > img { z-index: 0; }
+.testi-media .testi-play { z-index: 2; }
 
 /* fullscreen video overlay (testimonial play button) */
 .l7-video-overlay {

@@ -21,7 +21,8 @@ if ( ! $video_url ) {
 <section class="section">
 	<div class="container-wide">
 		<div class="testi">
-			<div class="testi-media has-photo"<?php echo l7_bg_style( 'testimonial_photo', $t['photo'] ); ?>>
+			<div class="testi-media has-photo">
+				<?php echo l7_render_img( l7_get_raw( 'testimonial_photo' ), $t['photo'], 'Відгук клієнта про ЛАЗЕР·7', array( 'size' => 'large' ) ); ?>
 				<button class="testi-play" title="Play"<?php echo $video_url ? ' data-video-play="' . esc_url( $video_url ) . '"' : ''; ?>><?php echo l7_icon( 'play' ); ?></button>
 			</div>
 			<div class="testi-body">

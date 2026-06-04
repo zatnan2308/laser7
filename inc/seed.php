@@ -114,6 +114,15 @@ function l7_seed_content( $page_id ) {
 	update_field( 'footer_col_c_en', $D['footer']['col_c_en'], 'option' );
 	update_field( 'footer_links', $D['footer']['links'], 'option' );
 
+	// SEO (brand_logo left empty on purpose → text wordmark until user uploads one).
+	update_field( 'seo_title_ua', $D['seo']['title_ua'], 'option' );
+	update_field( 'seo_title_en', $D['seo']['title_en'], 'option' );
+	update_field( 'seo_description_ua', $D['seo']['desc_ua'], 'option' );
+	update_field( 'seo_description_en', $D['seo']['desc_en'], 'option' );
+	update_field( 'seo_og_image', l7_import_asset_image( $D['seo']['og_image'] ), 'option' );
+	update_field( 'seo_geo_lat', $D['seo']['geo_lat'], 'option' );
+	update_field( 'seo_geo_lng', $D['seo']['geo_lng'], 'option' );
+
 	/* ---------------- FRONT PAGE ----------------------------------- */
 	$p = $page_id;
 	$h = $D['hero'];
