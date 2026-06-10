@@ -340,6 +340,39 @@
         qstatus.className = 'qf-status ' + type;
         qstatus.innerHTML = '<span class="lng lng-ua">' + ua + '</span><span class="lng lng-en">' + en + '</span>';
       }
+
+      /* -- contact validation: phone OR Telegram, both checked in parallel -- */
+      var contactInput = qform.querySelector('[name="contact"]');
+      function isValidPhone(v) {
+        if (!/^\+?[\d\s\-().]+$/.test(v)) return false;   // only phone characters
+        var digits = v.replace(/\D/g, '');
+        return digits.length >= 10 && digits.length <= 15; // 0671234567 / +380671234567
+      }
+      function isValidTelegram(v) {
+        var t = v.replace(/^(?:https?:\/\/)?(?:t\.me\/|telegram\.me\/)/i, '').replace(/^@/, '');
+        return /^[A-Za-z][A-Za-z0-9_]{4,31}$/.test(t);     // Telegram username rules
+      }
+      function validateContact() {
+        var v = contactInput ? contactInput.value.trim() : '';
+        if (v === '') {
+          qfStatus('err', 'Вкажіть телефон або нік у Telegram — щоб ми могли відповісти.', 'Please add a phone or Telegram handle so we can reply.');
+        } else if (!isValidPhone(v) && !isValidTelegram(v)) {
+          qfStatus('err', 'Перевірте контакт: телефон (напр. +380 67 123 45 67) або нік Telegram (напр. @laser7_odesa).', 'Check the contact: a phone (+380 67 123 45 67) or a Telegram handle (@laser7_odesa).');
+        } else {
+          return true;
+        }
+        if (contactInput) {
+          contactInput.classList.add('is-invalid');
+          contactInput.focus();
+        }
+        return false;
+      }
+      if (contactInput) {
+        contactInput.addEventListener('input', function () {
+          contactInput.classList.remove('is-invalid');
+          if (qstatus && qstatus.classList.contains('err')) { qstatus.className = 'qf-status'; qstatus.innerHTML = ''; }
+        });
+      }
       function openTgFallback() {
         var handle = qform.getAttribute('data-telegram') || '';
         var fd = new FormData(qform);
@@ -351,6 +384,7 @@
       }
       qform.addEventListener('submit', function (e) {
         e.preventDefault();
+        if (!validateContact()) { return; }
         // No server endpoint (e.g. static preview) → open Telegram with prefilled text.
         if (typeof LASER7 === 'undefined' || !LASER7.ajax) { openTgFallback(); return; }
 
@@ -367,6 +401,9 @@
             if (res && res.success) {
               qfStatus('ok', 'Дякуємо! Заявку надіслано в Telegram.', 'Thank you! Your request was sent to Telegram.');
               qform.reset();
+            } else if (res && res.data && res.data.msg === 'contact') {
+              if (contactInput) { contactInput.classList.add('is-invalid'); contactInput.focus(); }
+              qfStatus('err', 'Перевірте контакт: телефон (напр. +380 67 123 45 67) або нік Telegram (напр. @laser7_odesa).', 'Check the contact: a phone (+380 67 123 45 67) or a Telegram handle (@laser7_odesa).');
             } else if (res && res.data && res.data.fallback) {
               openTgFallback();
               qfStatus('ok', 'Відкрили Telegram — натисніть «Надіслати».', 'Opened Telegram — press “Send”.');

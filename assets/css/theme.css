@@ -227,6 +227,10 @@ html[data-lang="ua"] .hero-h1 .lng-en { display: none !important; }
 /* ---------- contact form: honeypot + status feedback ----------- */
 .l7-hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
 .qf-status { margin-top: 0.1rem; font-size: 0.86rem; line-height: 1.4; min-height: 1.2em; }
+.qf-input.is-invalid {
+  border-color: var(--red) !important;
+  box-shadow: 0 0 0 1px var(--red);
+}
 .qf-status.sending { color: rgba(243, 243, 245, 0.7); }
 .qf-status.ok { color: #6fe09b; }
 .qf-status.err { color: #ff8a7a; }

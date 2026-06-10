@@ -393,6 +393,30 @@ function laser7_form_localize() {
 }
 add_action( 'wp_enqueue_scripts', 'laser7_form_localize', 20 );
 
+/**
+ * Validate the "Telegram / телефон" field: accepted when it passes EITHER the
+ * phone check OR the Telegram-handle check (both run in parallel).
+ * Mirrors the client-side rules in assets/js/main.js.
+ */
+function l7_valid_contact( $v ) {
+	$v = trim( (string) $v );
+	if ( '' === $v ) {
+		return false;
+	}
+	// Phone: only phone characters, 10–15 digits (0671234567 / +380671234567).
+	if ( preg_match( '/^\+?[\d\s\-().]+$/', $v ) ) {
+		$digits = preg_replace( '/\D/', '', $v );
+		$len    = strlen( $digits );
+		if ( $len >= 10 && $len <= 15 ) {
+			return true;
+		}
+	}
+	// Telegram: optional t.me/ or @, then a valid username (5–32, letter first).
+	$t = preg_replace( '#^(?:https?://)?(?:t\.me/|telegram\.me/)#i', '', $v );
+	$t = ltrim( $t, '@' );
+	return (bool) preg_match( '/^[A-Za-z][A-Za-z0-9_]{4,31}$/', $t );
+}
+
 function laser7_handle_lead() {
 	check_ajax_referer( 'laser7_lead', 'nonce' );
 
@@ -407,6 +431,11 @@ function laser7_handle_lead() {
 
 	if ( '' === $name && '' === $contact && '' === $brief ) {
 		wp_send_json_error( array( 'msg' => 'empty' ) );
+	}
+
+	// Contact is required and must look like a phone number or a Telegram handle.
+	if ( ! l7_valid_contact( $contact ) ) {
+		wp_send_json_error( array( 'msg' => 'contact' ) );
 	}
 
 	$token = trim( (string) l7_opt( 'telegram_bot_token', '' ) );
