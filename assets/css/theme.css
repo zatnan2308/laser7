@@ -145,3 +145,56 @@ html[data-lang="ua"] .hero-h1 .lng-en { display: none !important; }
 .legal-body li { margin-bottom: 0.4rem; }
 .legal-body a { color: var(--red); }
 .legal-body strong { color: var(--ink); }
+
+/* ---------- static cards: no hover lift / hover animation ------- */
+/* Advantages (Переваги), Prices (Прайс), Materials (Матеріали) */
+.adv-cell,
+.adv-cell .ico,
+.adv-cell::after,
+.price-card,
+.mat { transition: none; }
+
+.adv-cell:hover { transform: none; box-shadow: none; border-color: var(--rule); }
+.adv-cell:hover::after { border-color: transparent transparent var(--rule) transparent; }
+.adv-cell:hover .ico { color: var(--ink); }
+
+.price-card:hover { transform: none; box-shadow: none; }
+
+.mat:hover { transform: none; box-shadow: none; }
+
+/* ---------- phones: Portfolio & Materials become swipe sliders -- */
+/* Desktop/tablet keep the original grid; ≤600px turns into a
+   horizontal scroll-snap slider. */
+@media (max-width: 600px) {
+  .portfolio-grid,
+  .mat-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.6rem;
+  }
+  .portfolio-grid::-webkit-scrollbar,
+  .mat-grid::-webkit-scrollbar { display: none; }
+
+  .portfolio-grid > .work {
+    flex: 0 0 86%;
+    scroll-snap-align: start;
+  }
+  .mat-grid > .mat {
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+  }
+  /* keep the empty-state note full width, not a slide */
+  .portfolio-grid > .portfolio-empty { flex: 0 0 100%; }
+}
+
+/* ---------- contact form: honeypot + status feedback ----------- */
+.l7-hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
+.qf-status { margin-top: 0.1rem; font-size: 0.86rem; line-height: 1.4; min-height: 1.2em; }
+.qf-status.sending { color: rgba(243, 243, 245, 0.7); }
+.qf-status.ok { color: #6fe09b; }
+.qf-status.err { color: #ff8a7a; }

@@ -60,6 +60,8 @@ $tg_handle = l7_field( 'contact_form_telegram', $c['form_telegram'] );
 					<input class="qf-input" name="contact"<?php echo l7_attr_bi( $c['form_contact_ua'], $c['form_contact_en'] ); ?> />
 				</div>
 				<textarea class="qf-input" name="brief" rows="3" style="resize:vertical"<?php echo l7_attr_bi( $c['form_brief_ua'], $c['form_brief_en'] ); ?>></textarea>
+				<input type="text" name="company" class="l7-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+				<div class="qf-status" data-qf-status></div>
 				<button type="submit" class="btn btn-burn" style="justify-content:center">
 					<?php l7_bi( 'contact_form_btn', $c['form_btn_ua'], $c['form_btn_en'] ); ?> <?php echo l7_icon( 'arrow' ); ?>
 				</button>

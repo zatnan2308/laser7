@@ -232,8 +232,13 @@
     /* ---------------- quick brief form → Telegram ---- */
     var qform = document.querySelector('[data-quick-form]');
     if (qform) {
-      qform.addEventListener('submit', function (e) {
-        e.preventDefault();
+      var qstatus = qform.querySelector('[data-qf-status]');
+      function qfStatus(type, ua, en) {
+        if (!qstatus) return;
+        qstatus.className = 'qf-status ' + type;
+        qstatus.innerHTML = '<span class="lng lng-ua">' + ua + '</span><span class="lng lng-en">' + en + '</span>';
+      }
+      function openTgFallback() {
         var handle = qform.getAttribute('data-telegram') || '';
         var fd = new FormData(qform);
         var ua = currentLang() === 'ua';
@@ -241,6 +246,37 @@
           (ua ? 'Запит' : 'Request') + ': ' + (fd.get('name') || '—') + ' (' + (fd.get('contact') || '—') + ')\n' + (fd.get('brief') || '')
         );
         window.open('https://t.me/' + handle + '?text=' + msg, '_blank');
+      }
+      qform.addEventListener('submit', function (e) {
+        e.preventDefault();
+        // No server endpoint (e.g. static preview) → open Telegram with prefilled text.
+        if (typeof LASER7 === 'undefined' || !LASER7.ajax) { openTgFallback(); return; }
+
+        var btn = qform.querySelector('button[type="submit"]');
+        var fd = new FormData(qform);
+        fd.append('action', 'laser7_lead');
+        fd.append('nonce', LASER7.nonce);
+        qfStatus('sending', 'Надсилаємо…', 'Sending…');
+        if (btn) { btn.disabled = true; }
+
+        fetch(LASER7.ajax, { method: 'POST', body: fd, credentials: 'same-origin' })
+          .then(function (r) { return r.json(); })
+          .then(function (res) {
+            if (res && res.success) {
+              qfStatus('ok', 'Дякуємо! Заявку надіслано в Telegram.', 'Thank you! Your request was sent to Telegram.');
+              qform.reset();
+            } else if (res && res.data && res.data.fallback) {
+              openTgFallback();
+              qfStatus('ok', 'Відкрили Telegram — натисніть «Надіслати».', 'Opened Telegram — press “Send”.');
+            } else {
+              qfStatus('err', 'Не вдалося надіслати. Напишіть нам у месенджер.', 'Could not send. Please message us.');
+            }
+          })
+          .catch(function () {
+            openTgFallback();
+            qfStatus('ok', 'Відкрили Telegram — натисніть «Надіслати».', 'Opened Telegram — press “Send”.');
+          })
+          .then(function () { if (btn) { btn.disabled = false; } });
       });
     }
 

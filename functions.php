@@ -369,3 +369,70 @@ function laser7_import_page() {
 	</div>
 	<?php
 }
+
+/* -------------------------------------------------------------------------
+ * 8. Contact form → Telegram (server-side via Bot API) with link fallback.
+ * ---------------------------------------------------------------------- */
+function laser7_form_localize() {
+	wp_localize_script( 'laser7-main', 'LASER7', array(
+		'ajax'  => admin_url( 'admin-ajax.php' ),
+		'nonce' => wp_create_nonce( 'laser7_lead' ),
+	) );
+}
+add_action( 'wp_enqueue_scripts', 'laser7_form_localize', 20 );
+
+function laser7_handle_lead() {
+	check_ajax_referer( 'laser7_lead', 'nonce' );
+
+	// Honeypot: real users never fill this hidden field.
+	if ( ! empty( $_POST['company'] ) ) {
+		wp_send_json_success( array( 'ok' => true ) );
+	}
+
+	$name    = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+	$contact = isset( $_POST['contact'] ) ? sanitize_text_field( wp_unslash( $_POST['contact'] ) ) : '';
+	$brief   = isset( $_POST['brief'] ) ? sanitize_textarea_field( wp_unslash( $_POST['brief'] ) ) : '';
+
+	if ( '' === $name && '' === $contact && '' === $brief ) {
+		wp_send_json_error( array( 'msg' => 'empty' ) );
+	}
+
+	$token = trim( (string) l7_opt( 'telegram_bot_token', '' ) );
+	$chat  = trim( (string) l7_opt( 'telegram_chat_id', '' ) );
+
+	// Not configured → ask the client to fall back to the t.me link.
+	if ( '' === $token || '' === $chat ) {
+		wp_send_json_error( array( 'fallback' => true ) );
+	}
+
+	$site = wp_parse_url( home_url(), PHP_URL_HOST );
+	$text = "🟥 Нова заявка з сайту " . $site . "\n"
+		. "👤 Ім'я: " . ( '' !== $name ? $name : '—' ) . "\n"
+		. "📞 Контакт: " . ( '' !== $contact ? $contact : '—' ) . "\n"
+		. "📝 Бриф: " . ( '' !== $brief ? $brief : '—' );
+
+	$resp = wp_remote_post( 'https://api.telegram.org/bot' . $token . '/sendMessage', array(
+		'timeout' => 15,
+		'body'    => array(
+			'chat_id'                  => $chat,
+			'text'                     => $text,
+			'disable_web_page_preview' => 'true',
+		),
+	) );
+
+	if ( is_wp_error( $resp ) ) {
+		wp_send_json_error( array( 'msg' => 'network', 'fallback' => true ) );
+	}
+	$code = (int) wp_remote_retrieve_response_code( $resp );
+	$body = json_decode( wp_remote_retrieve_body( $resp ), true );
+	if ( 200 === $code && ! empty( $body['ok'] ) ) {
+		wp_send_json_success( array( 'ok' => true ) );
+	}
+	wp_send_json_error( array(
+		'msg'      => 'api',
+		'fallback' => true,
+		'detail'   => isset( $body['description'] ) ? $body['description'] : '',
+	) );
+}
+add_action( 'wp_ajax_laser7_lead', 'laser7_handle_lead' );
+add_action( 'wp_ajax_nopriv_laser7_lead', 'laser7_handle_lead' );
