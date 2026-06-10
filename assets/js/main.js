@@ -94,6 +94,7 @@
         var remaining = matched.length - Math.min(visible, matched.length);
         if (moreWrap) moreWrap.hidden = remaining <= 0;
         if (moreCount) moreCount.textContent = '+' + Math.min(remaining, PAGE);
+        if (grid._l7Rebuild) grid._l7Rebuild(); // refresh mobile slider dots
       }
 
       pills.forEach(function (p) {
@@ -102,6 +103,7 @@
           p.classList.add('is-active');
           active = p.getAttribute('data-cat');
           visible = PAGE;
+          grid.scrollLeft = 0; // mobile slider back to the first card
           apply();
         });
       });
@@ -190,6 +192,106 @@
 
       apply();
     }
+
+    /* ---------------- mobile slider controls --------- */
+    /* Wraps a scroll-snap grid, adds small side arrows + dot pagination.
+       Controls are styled visible only on ≤600px (see theme.css). */
+    function initSlider(grid, getSlides, label) {
+      if (!grid || grid._l7Rebuild) return;
+
+      var wrap = document.createElement('div');
+      wrap.className = 'l7-slider';
+      grid.parentNode.insertBefore(wrap, grid);
+      wrap.appendChild(grid);
+
+      var chevL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
+      var chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>';
+      var prev = document.createElement('button');
+      prev.type = 'button'; prev.className = 'l7-slide-btn prev';
+      prev.setAttribute('aria-label', label + ' — previous'); prev.innerHTML = chevL;
+      var next = document.createElement('button');
+      next.type = 'button'; next.className = 'l7-slide-btn next';
+      next.setAttribute('aria-label', label + ' — next'); next.innerHTML = chevR;
+      wrap.appendChild(prev); wrap.appendChild(next);
+
+      var dots = document.createElement('div');
+      dots.className = 'l7-slide-dots';
+      wrap.parentNode.insertBefore(dots, wrap.nextSibling);
+
+      var slides = [];
+      function slideLeft(s) {
+        return s.getBoundingClientRect().left - grid.getBoundingClientRect().left + grid.scrollLeft;
+      }
+      function current() {
+        var sl = grid.scrollLeft, best = 0, bd = Infinity;
+        for (var i = 0; i < slides.length; i++) {
+          var d = Math.abs(slideLeft(slides[i]) - sl);
+          if (d < bd) { bd = d; best = i; }
+        }
+        return best;
+      }
+      function update() {
+        var c = current();
+        for (var i = 0; i < dots.children.length; i++) {
+          dots.children[i].classList.toggle('is-active', i === c);
+        }
+        var max = grid.scrollWidth - grid.clientWidth - 4;
+        prev.disabled = grid.scrollLeft <= 4;
+        next.disabled = grid.scrollLeft >= max;
+        var multi = slides.length > 1 && grid.scrollWidth > grid.clientWidth + 4;
+        prev.style.visibility = multi ? '' : 'hidden';
+        next.style.visibility = multi ? '' : 'hidden';
+        dots.style.display = multi ? '' : 'none';
+      }
+      function goTo(i) {
+        if (!slides.length) return;
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        var target = slideLeft(slides[i]);
+        var from = grid.scrollLeft;
+        grid.scrollTo({ left: target, behavior: 'smooth' });
+        // fallback: if smooth scrolling didn't start (older browser / throttled
+        // frames), jump instantly so the arrows always work
+        setTimeout(function () {
+          if (Math.abs(grid.scrollLeft - from) < 2 && Math.abs(target - from) > 2) {
+            grid.scrollLeft = target;
+          }
+          update();
+        }, 220);
+      }
+      function rebuild() {
+        slides = getSlides(grid);
+        dots.innerHTML = '';
+        slides.forEach(function (s, i) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.setAttribute('aria-label', label + ' ' + (i + 1));
+          b.addEventListener('click', function () { goTo(i); });
+          dots.appendChild(b);
+        });
+        update();
+      }
+      prev.addEventListener('click', function () { goTo(current() - 1); });
+      next.addEventListener('click', function () { goTo(current() + 1); });
+      var raf = null;
+      grid.addEventListener('scroll', function () {
+        if (raf) return;
+        raf = requestAnimationFrame(function () { raf = null; update(); });
+      }, { passive: true });
+      window.addEventListener('resize', update);
+
+      grid._l7Rebuild = rebuild;
+      rebuild();
+    }
+    initSlider(
+      document.querySelector('.portfolio-grid'),
+      function (g) { return [].filter.call(g.querySelectorAll('.work'), function (w) { return !w.hidden; }); },
+      'Portfolio slide'
+    );
+    initSlider(
+      document.querySelector('.mat-grid'),
+      function (g) { return [].slice.call(g.querySelectorAll('.mat')); },
+      'Materials slide'
+    );
 
     /* ---------------- quick contact ------------------ */
     var qc = document.querySelector('[data-qc]');

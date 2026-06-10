@@ -192,6 +192,38 @@ html[data-lang="ua"] .hero-h1 .lng-en { display: none !important; }
   .portfolio-grid > .portfolio-empty { flex: 0 0 100%; }
 }
 
+/* ---------- slider controls: small arrows + dot pagination ------ */
+/* JS wraps each mobile slider in .l7-slider and appends the controls.
+   Visible on phones only; desktop keeps the plain grid. */
+.l7-slider { position: relative; }
+.l7-slide-btn, .l7-slide-dots { display: none; }
+@media (max-width: 600px) {
+  .l7-slide-btn {
+    display: grid; place-items: center;
+    position: absolute; top: 50%; transform: translateY(-50%);
+    z-index: 5;
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--ink);
+    box-shadow: var(--shadow-md);
+    padding: 0; cursor: pointer;
+  }
+  .l7-slide-btn svg { width: 14px; height: 14px; }
+  .l7-slide-btn.prev { left: -8px; }
+  .l7-slide-btn.next { right: -8px; }
+  .l7-slide-btn[disabled] { opacity: 0.35; }
+  .l7-slide-btn:active { background: var(--red); border-color: var(--red); color: #fff; }
+
+  .l7-slide-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; margin-top: 0.9rem; }
+  .l7-slide-dots button {
+    width: 7px; height: 7px; border-radius: 999px; border: 0; padding: 0;
+    background: var(--rule); cursor: pointer;
+    transition: background 0.2s, width 0.2s;
+  }
+  .l7-slide-dots button.is-active { background: var(--red); width: 18px; }
+}
+
 /* ---------- contact form: honeypot + status feedback ----------- */
 .l7-hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
 .qf-status { margin-top: 0.1rem; font-size: 0.86rem; line-height: 1.4; min-height: 1.2em; }
