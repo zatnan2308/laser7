@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LASER7_VERSION', '1.0.0' );
+define( 'LASER7_VERSION', '1.1.0' );
 define( 'LASER7_DIR', get_template_directory() );
 define( 'LASER7_URI', get_template_directory_uri() );
 
@@ -57,6 +57,18 @@ add_filter( 'kses_allowed_protocols', 'laser7_allowed_protocols' );
 /* -------------------------------------------------------------------------
  * 2. Assets
  * ---------------------------------------------------------------------- */
+
+/**
+ * Cache-busting version for a theme asset: theme version + the file's
+ * modification time. Changes automatically on every deploy (git pull
+ * rewrites the files), so browsers always pull the fresh CSS/JS.
+ */
+function l7_asset_ver( $rel ) {
+	$file = LASER7_DIR . $rel;
+	$mtime = file_exists( $file ) ? filemtime( $file ) : false;
+	return $mtime ? LASER7_VERSION . '.' . $mtime : LASER7_VERSION;
+}
+
 function laser7_assets() {
 	// Google Fonts (Montserrat + Manrope), exactly as in the design.
 	wp_enqueue_style(
@@ -67,13 +79,13 @@ function laser7_assets() {
 	);
 
 	// Design styles — copied 1:1 from the handoff bundle.
-	wp_enqueue_style( 'laser7-styles', LASER7_URI . '/assets/css/styles.css', array(), LASER7_VERSION );
+	wp_enqueue_style( 'laser7-styles', LASER7_URI . '/assets/css/styles.css', array(), l7_asset_ver( '/assets/css/styles.css' ) );
 
 	// Theme additions (bilingual + WP tweaks).
-	wp_enqueue_style( 'laser7-theme', LASER7_URI . '/assets/css/theme.css', array( 'laser7-styles' ), LASER7_VERSION );
+	wp_enqueue_style( 'laser7-theme', LASER7_URI . '/assets/css/theme.css', array( 'laser7-styles' ), l7_asset_ver( '/assets/css/theme.css' ) );
 
 	// Front-end behaviour (lang toggle, menu, FAQ, portfolio filter, lightbox…).
-	wp_enqueue_script( 'laser7-main', LASER7_URI . '/assets/js/main.js', array(), LASER7_VERSION, true );
+	wp_enqueue_script( 'laser7-main', LASER7_URI . '/assets/js/main.js', array(), l7_asset_ver( '/assets/js/main.js' ), true );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
