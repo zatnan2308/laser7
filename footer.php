@@ -39,9 +39,13 @@ foreach ( $channels as $c ) { $ch_by_id[ $c['id'] ] = $c; }
 				<p class="tagline"><?php l7_bi( 'footer_tagline', $D['footer']['tagline_ua'], $D['footer']['tagline_en'], 'option' ); ?></p>
 				<div class="footer-social">
 					<?php foreach ( $channels as $c ) :
-						if ( ! $c['url'] ) { continue; } ?>
-						<a href="<?php echo esc_url( $c['url'] ); ?>" target="_blank" rel="noopener noreferrer" title="<?php echo esc_attr( $c['label'] ); ?>"><?php echo l7_icon( $c['id'] ); ?></a>
+						if ( ! $c['url'] ) { continue; }
+						$cls = isset( $ch_class[ $c['id'] ] ) ? $ch_class[ $c['id'] ] : ''; ?>
+						<a class="<?php echo esc_attr( $cls ); ?>" href="<?php echo esc_url( $c['url'] ); ?>" target="_blank" rel="noopener noreferrer" title="<?php echo esc_attr( $c['label'] ); ?>"><?php echo l7_icon( $c['id'] ); ?></a>
 					<?php endforeach; ?>
+					<?php $insta = l7_opt( 'instagram_url', '' ); if ( $insta ) : ?>
+						<a class="in" href="<?php echo esc_url( $insta ); ?>" target="_blank" rel="noopener noreferrer" title="Instagram"><?php echo l7_icon( 'instagram' ); ?></a>
+					<?php endif; ?>
 				</div>
 			</div>
 

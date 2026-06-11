@@ -108,6 +108,7 @@ function laser7_register_fields() {
 			l7f_bi( 'note', 'Примітка', '', '', 'text', 'ch_' ),
 		) ),
 	) );
+	$opt[] = l7f( 'text', 'instagram_url', 'Instagram — посилання', '', array( 'instructions' => 'Напр. https://instagram.com/laser7_odesa — іконка зʼявиться у підвалі. Якщо порожньо — іконка не показується.' ) );
 	$opt[] = l7f( 'text', 'telegram_bot_token', 'Telegram-бот: токен (відправлення заявок з форми)', '', array( 'instructions' => 'Створіть бота через @BotFather і вставте токен виду 123456789:AA… Якщо залишити порожнім — форма просто відкриває Telegram (без авто-відправлення).' ) );
 	$opt[] = l7f( 'text', 'telegram_chat_id', 'Telegram: chat ID одержувача заявок', '', array( 'instructions' => 'Напишіть своєму боту будь-що, відкрийте https://api.telegram.org/bot<ТОКЕН>/getUpdates і скопіюйте число з "chat":{"id":…}. Можна вказати ID групи/каналу.' ) );
 

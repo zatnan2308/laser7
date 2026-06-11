@@ -33,6 +33,12 @@ html:not([data-lang]) .lng-en { display: none !important; }
 html[data-lang="en"] .hero-h1 .lng-ua,
 html[data-lang="ua"] .hero-h1 .lng-en { display: none !important; }
 
+/* ---------- footer social: brand hover colors (match the header) */
+.footer-social a.tg:hover { background: #229ED9; border-color: #229ED9; color: #fff; }
+.footer-social a.vb:hover { background: #7B519D; border-color: #7B519D; color: #fff; }
+.footer-social a.wa:hover { background: #25D366; border-color: #25D366; color: #fff; }
+.footer-social a.in:hover { background: #E4405F; border-color: #E4405F; color: #fff; }
+
 /* ---------- footer developer credit ---------------------------- */
 .footer-credit {
   text-align: center;
@@ -161,6 +167,14 @@ html[data-lang="ua"] .hero-h1 .lng-en { display: none !important; }
 .price-card:hover { transform: none; box-shadow: none; }
 
 .mat:hover { transform: none; box-shadow: none; }
+
+/* materials: make sure the card frame is always visible — same rule
+   border as the other cards (.adv-cell / .price-card / .work), kept
+   explicit here so no optimizer / override can drop it */
+.mat,
+.mat:hover {
+  border: 1px solid var(--rule) !important;
+}
 
 /* ---------- phones: Portfolio & Materials become swipe sliders -- */
 /* Desktop/tablet keep the original grid; ≤600px turns into a
