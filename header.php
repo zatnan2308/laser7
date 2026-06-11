@@ -75,6 +75,9 @@ $ch_class  = array( 'telegram' => 'tg', 'viber' => 'vb', 'whatsapp' => 'wa' );
 					if ( ! $c['url'] ) { continue; } ?>
 					<a class="nav-contact <?php echo esc_attr( $cls ); ?>" href="<?php echo esc_url( $c['url'] ); ?>" target="_blank" rel="noopener noreferrer" title="<?php echo esc_attr( $c['label'] ); ?>" aria-label="<?php echo esc_attr( $c['label'] ); ?>"><?php echo l7_icon( $c['id'] ); ?></a>
 				<?php endforeach; ?>
+				<?php $insta = l7_opt( 'instagram_url', '' ); if ( $insta ) : ?>
+					<a class="nav-contact in" href="<?php echo esc_url( $insta ); ?>" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram"><?php echo l7_icon( 'instagram' ); ?></a>
+				<?php endif; ?>
 			</div>
 			<button class="nav-burger" aria-label="Open menu" aria-expanded="false" data-burger>
 				<span></span><span></span><span></span>
@@ -107,6 +110,9 @@ $ch_class  = array( 'telegram' => 'tg', 'viber' => 'vb', 'whatsapp' => 'wa' );
 				if ( ! $c['url'] ) { continue; } ?>
 				<a class="channel-btn <?php echo esc_attr( $cls ); ?>" href="<?php echo esc_url( $c['url'] ); ?>" target="_blank" rel="noopener noreferrer" data-menu-close><?php echo l7_icon( $c['id'] ); ?><span><?php echo esc_html( $c['label'] ); ?></span></a>
 			<?php endforeach; ?>
+			<?php if ( ! empty( $insta ) ) : ?>
+				<a class="channel-btn in" href="<?php echo esc_url( $insta ); ?>" target="_blank" rel="noopener noreferrer" data-menu-close><?php echo l7_icon( 'instagram' ); ?><span>Instagram</span></a>
+			<?php endif; ?>
 		</div>
 		<div class="mm-info">
 			<div><?php echo l7_icon( 'pin' ); ?> <?php l7_bi( 'topbar_address', $D['topbar']['address_ua'], $D['topbar']['address_en'], 'option' ); ?></div>

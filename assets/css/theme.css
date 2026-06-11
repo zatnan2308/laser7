@@ -39,6 +39,12 @@ html[data-lang="ua"] .hero-h1 .lng-en { display: none !important; }
 .footer-social a.wa:hover { background: #25D366; border-color: #25D366; color: #fff; }
 .footer-social a.in:hover { background: #E4405F; border-color: #E4405F; color: #fff; }
 
+/* ---------- header / mobile menu: Instagram ---------------------- */
+.nav-contact.in:hover { background: #E4405F; border-color: #E4405F; }
+.channel-btn.in { color: #E4405F; }
+/* fit 4 buttons (3 messengers + Instagram) in the drawer row */
+.mm-channels { grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); }
+
 /* ---------- footer developer credit ---------------------------- */
 .footer-credit {
   text-align: center;
